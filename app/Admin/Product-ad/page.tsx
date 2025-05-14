@@ -1,25 +1,24 @@
 // This is a Server Component
-import React, { JSX } from "react";
+import React from "react";
 import Link from "next/link";
 import { fetchProductsPrisma } from "@/app/lib/prisma";
 import ProductTable from "./ProductTable";
-import { formatCurrency } from "@/app/lib/utils";
+import { Product } from "@/app/lib/definitions";
 
-// Tentukan tipe data produk berdasarkan skema dari Prisma
-type Product = {
-  id_product: number; // atau string jika pakai UUID
-  nama_produk: string;
-  harga: number;
-  image_url: string;
-};
+export default async function ProductPage() {
+  let products: Product[] = [];
 
-const formattedProducts = s.map((product: { id_product: any; nama_produk: any; harga: number; image_url: any; }) => ({
-  id: product.id_product,
-  nama_produk: product.nama_produk,
-  harga: product.harga,
-  harga_formatted: formatCurrency(product.harga),
-  image_url: product.image_url,
-}));
+  try {
+    products = await fetchProductsPrisma();
+  } catch (err) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center text-red-600 font-semibold">
+          Gagal memuat data produk: {(err as Error).message}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -33,13 +32,7 @@ const formattedProducts = s.map((product: { id_product: any; nama_produk: any; h
         </Link>
       </div>
 
-      {error ? (
-        <div className="text-center py-10">
-          <p className="text-red-500">{error}</p>
-        </div>
-      ) : (
-        <ProductTable products={products} />
-      )}
+      <ProductTable products={products} />
     </div>
   );
 }

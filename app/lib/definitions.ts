@@ -42,13 +42,12 @@ export type LatestInvoice = {
 };
 
 export type Product = {
-  id: number | string;
+  id: number | string; // atau sesuai tipe asli id_product di database
   nama_produk: string;
   harga: number;
   harga_formatted: string;
   image_url: string | null;
 };
-
 
 export type MostProduct = {
   id_product: string;
