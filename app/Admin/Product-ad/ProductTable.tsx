@@ -3,7 +3,6 @@
 import React, { JSX } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { deleteProduct } from "./actions";
 
 // Tipe produk
 type Product = {
